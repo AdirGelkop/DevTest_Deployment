@@ -1,0 +1,35 @@
+#name of the pipeline
+name: CI Pipeline
+
+#when to trigger the pipeline
+on:
+  #trigger on push and pull request events
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Define the jobs to run in the pipeline
+jobs:
+  #name of the job
+  test:
+    #machine (provided by GitHub) to run the job on
+    runs-on: ubuntu-latest
+    steps:
+      #copy the code from the repo to the machine
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      #set up python environment on the machine
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      #install dependencies needed for testing
+      - name: Install dependencies
+        run: pip install pytest requests
+        
+      #run the tests
+      - name: Run tests
+        run: pytest day1/ -v
